@@ -7,7 +7,7 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
   return {
     restrict: 'EA',
     require: '^ngModel',
-    scope: { ngModel: '=', config: '=?', options: '=?', ngDisabled: '=', ngRequired: '&' },
+    scope: { ngModel: '=', config: '=?', options: '<?', ngDisabled: '=', ngRequired: '&' },
     link: function(scope, element, attrs, modelCtrl) {
 
       var selectize,
@@ -39,11 +39,13 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
 
         selectize.addOption(curr, true);
 
-        selectize.refreshOptions(false); // updates results if user has entered a query
         setSelectizeValue();
       }
 
       var setSelectizeValue = function() {
+        if(scope.ngModel === '') {
+          scope.ngModel=null;
+        }
         validate();
 
         selectize.$control.toggleClass('ng-valid', modelCtrl.$valid);
