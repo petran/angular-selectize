@@ -1,6 +1,6 @@
 /**
  * Angular Selectize2
- * https://github.com/machineboy2045/angular-selectize
+ * https://github.com/petran/angular-selectize
  **/
 
 angular.module('selectize', []).value('selectizeConfig', {}).directive("selectize", ['selectizeConfig', function(selectizeConfig) {
@@ -31,19 +31,20 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
 
       var setSelectizeOptions = function(curr, prev) {
         angular.forEach(prev, function(opt){
-          if(curr.indexOf(opt) === -1){
+          if( curr && curr.indexOf(opt) === -1){
             var value = opt[settings.valueField];
             selectize.removeOption(value, true);
           }
         });
 
-        selectize.addOption(curr, true);
-
-        setSelectizeValue();
+        if(curr) {
+          selectize.addOption(curr, true);
+          setSelectizeValue();
+        }
       }
 
       var setSelectizeValue = function() {
-        if(scope.ngModel === '') {
+        if(scope.ngModel === '' || scope.ngModel === undefined) {
           scope.ngModel=null;
         }
         validate();
