@@ -7,7 +7,7 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
   return {
     restrict: 'EA',
     require: '^ngModel',
-    scope: { ngModel: '=', config: '=?', options: '<?', ngDisabled: '=', ngRequired: '&' },
+    scope: { ngModel: '=', config: '=?', options: '=?', ngDisabled: '=', ngRequired: '&' },
     link: function(scope, element, attrs, modelCtrl) {
 
       var selectize,
@@ -46,6 +46,10 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
       var setSelectizeValue = function() {
         if(scope.ngModel === '' || scope.ngModel === undefined) {
           scope.ngModel=null;
+        }  else if(scope.config.valueFieldType && scope.config.valueFieldType === 'number') {
+             if(typeof scope.ngModel === 'string') {
+                scope.ngModel=parseInt(scope.ngModel);
+              }
         }
         validate();
 
